@@ -124,7 +124,8 @@
             margin-bottom: 4px;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 10px 14px;
             border-radius: 12px;
@@ -135,7 +136,8 @@
             transition: 0.15s;
         }
 
-        .form-group input:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #2563eb;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
@@ -147,6 +149,24 @@
             gap: 12px;
         }
 
+        .delivery-address {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            border: 1px solid #eef2f6;
+        }
+
+        .delivery-address .label {
+            font-size: 0.7rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* ===== PIX LOGO CORRIGIDA ===== */
         .payment-info {
             background: #eff6ff;
             border: 1px solid #b9d0f0;
@@ -155,13 +175,13 @@
             margin: 8px 0 16px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
-        .payment-info .pix-logo {
-            width: 40px;
-            height: 40px;
-            background: #2563eb;
+        .pix-logo-wrapper {
+            width: 44px;
+            height: 44px;
+            background: #32BCAD;
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -169,15 +189,15 @@
             flex-shrink: 0;
         }
 
-        .payment-info .pix-logo svg {
-            width: 24px;
-            height: 24px;
-            fill: white;
+        .pix-logo-wrapper svg {
+            width: 28px;
+            height: 28px;
         }
 
         .payment-info .text {
             font-size: 0.85rem;
             color: #1e4a8a;
+            line-height: 1.4;
         }
         .payment-info .text strong {
             color: #1e40af;
@@ -550,11 +570,83 @@
                 <input type="email" id="customerEmail" placeholder="seu@email.com">
             </div>
 
+            <!-- Endereço de entrega -->
+            <div class="delivery-address">
+                <div class="label">Endereco de entrega</div>
+                
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label for="addressCep">CEP</label>
+                    <input type="text" id="addressCep" placeholder="00000-000" maxlength="9">
+                </div>
+
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label for="addressStreet">Rua / Avenida</label>
+                    <input type="text" id="addressStreet" placeholder="Digite sua rua">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="addressNumber">Numero</label>
+                        <input type="text" id="addressNumber" placeholder="123">
+                    </div>
+                    <div class="form-group">
+                        <label for="addressComplement">Complemento</label>
+                        <input type="text" id="addressComplement" placeholder="Apto, Bloco, etc">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:12px;">
+                    <label for="addressNeighborhood">Bairro</label>
+                    <input type="text" id="addressNeighborhood" placeholder="Digite seu bairro">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="addressCity">Cidade</label>
+                        <input type="text" id="addressCity" placeholder="Sua cidade">
+                    </div>
+                    <div class="form-group">
+                        <label for="addressState">Estado</label>
+                        <select id="addressState">
+                            <option value="">Selecione</option>
+                            <option value="AC">AC</option>
+                            <option value="AL">AL</option>
+                            <option value="AP">AP</option>
+                            <option value="AM">AM</option>
+                            <option value="BA">BA</option>
+                            <option value="CE">CE</option>
+                            <option value="DF">DF</option>
+                            <option value="ES">ES</option>
+                            <option value="GO">GO</option>
+                            <option value="MA">MA</option>
+                            <option value="MT">MT</option>
+                            <option value="MS">MS</option>
+                            <option value="MG">MG</option>
+                            <option value="PA">PA</option>
+                            <option value="PB">PB</option>
+                            <option value="PR">PR</option>
+                            <option value="PE">PE</option>
+                            <option value="PI">PI</option>
+                            <option value="RJ">RJ</option>
+                            <option value="RN">RN</option>
+                            <option value="RS">RS</option>
+                            <option value="RO">RO</option>
+                            <option value="RR">RR</option>
+                            <option value="SC">SC</option>
+                            <option value="SP">SP</option>
+                            <option value="SE">SE</option>
+                            <option value="TO">TO</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PIX LOGO CORRIGIDA ===== -->
             <div class="payment-info">
-                <div class="pix-logo">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7.5 12L4.5 9L7.5 6L10.5 9L7.5 12ZM16.5 6L13.5 9L16.5 12L19.5 9L16.5 6ZM12 10.5L9 13.5L12 16.5L15 13.5L12 10.5Z"/>
-                        <circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.5" fill="none"/>
+                <div class="pix-logo-wrapper">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="white"/>
+                        <path d="M16.59 7.58L10 14.17L7.41 11.58L6 13L10 17L18 9L16.59 7.58Z" fill="white"/>
                     </svg>
                 </div>
                 <span class="text"><strong>Pagamento via PIX</strong> - Rapido, seguro e confirmado em minutos</span>
@@ -690,6 +782,14 @@
             const customerPhone = document.getElementById('customerPhone');
             const customerEmail = document.getElementById('customerEmail');
 
+            const addressCep = document.getElementById('addressCep');
+            const addressStreet = document.getElementById('addressStreet');
+            const addressNumber = document.getElementById('addressNumber');
+            const addressComplement = document.getElementById('addressComplement');
+            const addressNeighborhood = document.getElementById('addressNeighborhood');
+            const addressCity = document.getElementById('addressCity');
+            const addressState = document.getElementById('addressState');
+
             function showError(msg) {
                 errorMessage.textContent = msg;
                 errorMessage.classList.add('show');
@@ -714,12 +814,23 @@
                     .slice(0, 15);
             }
 
+            function maskCEP(value) {
+                return value
+                    .replace(/\D/g, '')
+                    .replace(/(\d{5})(\d)/, '$1-$2')
+                    .slice(0, 9);
+            }
+
             customerCpf.addEventListener('input', (e) => {
                 e.target.value = maskCPF(e.target.value);
             });
 
             customerPhone.addEventListener('input', (e) => {
                 e.target.value = maskPhone(e.target.value);
+            });
+
+            addressCep.addEventListener('input', (e) => {
+                e.target.value = maskCEP(e.target.value);
             });
 
             function loadCart() {
@@ -822,23 +933,57 @@
                 errorMessage.classList.remove('show');
 
                 if (!customerName.value.trim()) {
-                    showError('Por favor, preencha seu nome completo.');
+                    showError('Preencha seu nome completo.');
                     customerName.focus();
                     return;
                 }
 
                 const cpfClean = customerCpf.value.replace(/\D/g, '');
                 if (cpfClean.length !== 11) {
-                    showError('Por favor, preencha um CPF valido (11 digitos).');
+                    showError('CPF invalido (11 digitos).');
                     customerCpf.focus();
                     return;
                 }
 
                 const phoneClean = customerPhone.value.replace(/\D/g, '');
                 if (phoneClean.length < 10) {
-                    showError('Por favor, preencha um telefone valido.');
+                    showError('Telefone invalido.');
                     customerPhone.focus();
                     return;
+                }
+
+                const hasPhysical = cart.some(item => item.id === 'physical');
+                if (hasPhysical) {
+                    if (!addressStreet.value.trim()) {
+                        showError('Preencha a rua para entrega do pendrive fisico.');
+                        addressStreet.focus();
+                        return;
+                    }
+                    if (!addressNumber.value.trim()) {
+                        showError('Preencha o numero para entrega.');
+                        addressNumber.focus();
+                        return;
+                    }
+                    if (!addressNeighborhood.value.trim()) {
+                        showError('Preencha o bairro para entrega.');
+                        addressNeighborhood.focus();
+                        return;
+                    }
+                    if (!addressCity.value.trim()) {
+                        showError('Preencha a cidade para entrega.');
+                        addressCity.focus();
+                        return;
+                    }
+                    if (!addressState.value) {
+                        showError('Selecione o estado para entrega.');
+                        addressState.focus();
+                        return;
+                    }
+                    if (addressCep.value.replace(/\D/g, '').length < 8) {
+                        showError('Preencha um CEP valido.');
+                        addressCep.focus();
+                        return;
+                    }
                 }
 
                 const total = cart.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
@@ -860,19 +1005,17 @@
                         transactionId = payment.id;
 
                         pixArea.classList.add('active');
-                        
-                        // CORREÇÃO: O QR Code vem como base64, precisa ser tratado corretamente
+
                         const qrCodeData = payment.pix_qrcode;
                         if (qrCodeData.startsWith('data:image')) {
                             pixQrCode.src = qrCodeData;
                         } else if (qrCodeData.startsWith('http')) {
                             pixQrCode.src = qrCodeData;
                         } else {
-                            // Se for base64 puro, adiciona o prefixo
                             pixQrCode.src = `data:image/png;base64,${qrCodeData}`;
                         }
-                        
-                        pixCode.textContent = payment.pix_code || 'Código PIX disponível no QR Code';
+
+                        pixCode.textContent = payment.pix_code || 'Codigo PIX disponivel no QR Code';
 
                         paymentStatus.textContent = 'Aguardando pagamento';
                         paymentStatus.className = 'status-badge pending';
@@ -920,7 +1063,7 @@
 
             copyPixBtn.addEventListener('click', () => {
                 const code = pixCode.textContent;
-                if (code && code !== 'Carregando...' && code !== 'Código PIX disponível no QR Code') {
+                if (code && code !== 'Carregando...' && code !== 'Codigo PIX disponivel no QR Code') {
                     navigator.clipboard.writeText(code).then(() => {
                         const originalText = copyPixBtn.textContent;
                         copyPixBtn.textContent = 'Copiado!';
