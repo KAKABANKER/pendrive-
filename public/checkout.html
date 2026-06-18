@@ -226,25 +226,33 @@
             display: block;
         }
 
-        .pix-area img {
+        .pix-area .qr-container {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            display: inline-block;
+            margin: 8px auto;
+            border: 1px solid #e2e8f0;
+        }
+
+        .pix-area .qr-container img {
             max-width: 200px;
             width: 100%;
-            margin: 12px auto;
-            border-radius: 8px;
-            background: white;
-            padding: 8px;
-            border: 1px solid #e2e8f0;
+            height: auto;
+            display: block;
         }
 
         .pix-area .pix-code {
             background: white;
             padding: 10px;
             border-radius: 8px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             word-break: break-all;
             border: 1px solid #e2e8f0;
             margin: 8px 0;
             color: #1e293b;
+            max-height: 80px;
+            overflow-y: auto;
         }
 
         .pix-area .copy-btn {
@@ -304,7 +312,6 @@
             font-weight: 600;
         }
 
-        /* Feedbacks de clientes - AGORA NO FINAL */
         .testimonials {
             background: #fafbfc;
             border-radius: 16px;
@@ -406,6 +413,21 @@
             }
         }
 
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #991b1b;
+            font-size: 0.85rem;
+            margin: 12px 0;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
         .whatsapp-float {
             position: fixed;
             bottom: 24px;
@@ -487,17 +509,16 @@
 </head>
 <body>
     <div class="container">
-        <!-- Cabeçalho -->
         <header class="header">
             <div class="logo">Pendrive<span>Store</span></div>
             <a href="/" class="back-link">Voltar</a>
         </header>
 
-        <!-- Título -->
         <h1 class="checkout-title">Checkout</h1>
         <p class="checkout-sub">Preencha os dados e finalize seu pedido</p>
 
-        <!-- Resumo do pedido -->
+        <div class="error-message" id="errorMessage"></div>
+
         <div class="order-summary" id="orderSummary">
             <div class="label">Seu pedido</div>
             <div id="orderItems"></div>
@@ -507,7 +528,6 @@
             </div>
         </div>
 
-        <!-- Formulário -->
         <form id="checkoutForm">
             <div class="form-group">
                 <label for="customerName">Nome completo</label>
@@ -530,7 +550,6 @@
                 <input type="email" id="customerEmail" placeholder="seu@email.com">
             </div>
 
-            <!-- Informação de pagamento PIX com logo -->
             <div class="payment-info">
                 <div class="pix-logo">
                     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -546,13 +565,12 @@
             </button>
         </form>
 
-        <!-- Área PIX -->
         <div class="pix-area" id="pixArea">
             <h3 style="margin-bottom: 8px; font-weight: 700;">Pagamento via PIX</h3>
             <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 12px;">
                 Escaneie o QR Code ou copie o codigo PIX
             </p>
-            <div id="pixQrContainer">
+            <div class="qr-container">
                 <img id="pixQrCode" src="" alt="QR Code PIX">
             </div>
             <div class="pix-code" id="pixCodeContainer">
@@ -567,13 +585,11 @@
             </p>
         </div>
 
-        <!-- Delivery note -->
         <div class="delivery-note">
             <span>Frete</span>
             <strong>Entrega gratis</strong> para todo o Brasil (fisico e digital)
         </div>
 
-        <!-- FEEDBACKS DE CLIENTES - FINAL DA PAGINA -->
         <div class="testimonials">
             <div class="testimonials-title">O que nossos clientes dizem</div>
             
@@ -639,7 +655,6 @@
         </footer>
     </div>
 
-    <!-- Botão flutuante WhatsApp -->
     <a href="https://wa.me/5561981168652?text=Ol%C3%A1%2C%20vim%20pelo%20site%20PendriveStore%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20pendrives." 
        class="whatsapp-float" 
        target="_blank" 
@@ -653,7 +668,7 @@
 
     <script>
         (function() {
-            const API_BASE = window.location.origin || 'https://reidacacambinha.onrender.com';
+            const API_BASE = window.location.origin || 'https://pendrive.onrender.com';
 
             let cart = [];
             let transactionId = null;
@@ -668,11 +683,20 @@
             const pixCode = document.getElementById('pixCode');
             const copyPixBtn = document.getElementById('copyPixBtn');
             const paymentStatus = document.getElementById('paymentStatus');
+            const errorMessage = document.getElementById('errorMessage');
 
             const customerName = document.getElementById('customerName');
             const customerCpf = document.getElementById('customerCpf');
             const customerPhone = document.getElementById('customerPhone');
             const customerEmail = document.getElementById('customerEmail');
+
+            function showError(msg) {
+                errorMessage.textContent = msg;
+                errorMessage.classList.add('show');
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 6000);
+            }
 
             function maskCPF(value) {
                 return value
@@ -747,6 +771,7 @@
 
             async function createPayment(amount, customer) {
                 try {
+                    console.log('📤 Enviando requisição para criar PIX...');
                     const response = await fetch(`${API_BASE}/api/create-payment`, {
                         method: 'POST',
                         headers: {
@@ -761,7 +786,14 @@
                         })
                     });
 
+                    if (!response.ok) {
+                        const text = await response.text();
+                        console.error('❌ Resposta do servidor:', text);
+                        throw new Error(`Servidor respondeu com status ${response.status}: ${text}`);
+                    }
+
                     const data = await response.json();
+                    console.log('📥 Resposta do servidor:', data);
 
                     if (data.success) {
                         return data.payment;
@@ -769,7 +801,7 @@
                         throw new Error(data.error || 'Erro ao gerar pagamento');
                     }
                 } catch (error) {
-                    console.error('Erro ao criar pagamento:', error);
+                    console.error('❌ Erro ao criar pagamento:', error);
                     throw error;
                 }
             }
@@ -787,23 +819,24 @@
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                errorMessage.classList.remove('show');
 
                 if (!customerName.value.trim()) {
-                    alert('Por favor, preencha seu nome completo.');
+                    showError('Por favor, preencha seu nome completo.');
                     customerName.focus();
                     return;
                 }
 
                 const cpfClean = customerCpf.value.replace(/\D/g, '');
                 if (cpfClean.length !== 11) {
-                    alert('Por favor, preencha um CPF valido.');
+                    showError('Por favor, preencha um CPF valido (11 digitos).');
                     customerCpf.focus();
                     return;
                 }
 
                 const phoneClean = customerPhone.value.replace(/\D/g, '');
                 if (phoneClean.length < 10) {
-                    alert('Por favor, preencha um telefone valido.');
+                    showError('Por favor, preencha um telefone valido.');
                     customerPhone.focus();
                     return;
                 }
@@ -827,8 +860,19 @@
                         transactionId = payment.id;
 
                         pixArea.classList.add('active');
-                        pixQrCode.src = payment.pix_qrcode;
-                        pixCode.textContent = payment.pix_code || payment.pix_qrcode;
+                        
+                        // CORREÇÃO: O QR Code vem como base64, precisa ser tratado corretamente
+                        const qrCodeData = payment.pix_qrcode;
+                        if (qrCodeData.startsWith('data:image')) {
+                            pixQrCode.src = qrCodeData;
+                        } else if (qrCodeData.startsWith('http')) {
+                            pixQrCode.src = qrCodeData;
+                        } else {
+                            // Se for base64 puro, adiciona o prefixo
+                            pixQrCode.src = `data:image/png;base64,${qrCodeData}`;
+                        }
+                        
+                        pixCode.textContent = payment.pix_code || 'Código PIX disponível no QR Code';
 
                         paymentStatus.textContent = 'Aguardando pagamento';
                         paymentStatus.className = 'status-badge pending';
@@ -856,6 +900,7 @@
                                 checkInterval = null;
                                 submitBtn.disabled = false;
                                 submitBtn.innerHTML = 'Gerar PIX e finalizar compra';
+                                showError('Tempo limite excedido. Verifique se o pagamento foi realizado.');
                             }
                         }, 5000);
 
@@ -866,8 +911,8 @@
                     }
 
                 } catch (error) {
-                    console.error('Erro no checkout:', error);
-                    alert(error.message || 'Ocorreu um erro ao processar seu pedido. Tente novamente.');
+                    console.error('❌ Erro no checkout:', error);
+                    showError(error.message || 'Ocorreu um erro ao processar seu pedido. Tente novamente.');
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'Gerar PIX e finalizar compra';
                 }
@@ -875,7 +920,7 @@
 
             copyPixBtn.addEventListener('click', () => {
                 const code = pixCode.textContent;
-                if (code && code !== 'Carregando...') {
+                if (code && code !== 'Carregando...' && code !== 'Código PIX disponível no QR Code') {
                     navigator.clipboard.writeText(code).then(() => {
                         const originalText = copyPixBtn.textContent;
                         copyPixBtn.textContent = 'Copiado!';
@@ -891,6 +936,8 @@
                         document.body.removeChild(textArea);
                         alert('Codigo copiado!');
                     });
+                } else {
+                    alert('Nenhum codigo PIX disponivel para copiar.');
                 }
             });
 
