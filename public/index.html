@@ -68,19 +68,6 @@
     }
     .cart-badge:hover { background: #e2e8f0; }
     .cart-badge strong { font-weight: 600; color: #0b1a2e; }
-    .cart-badge .cart-count-bubble {
-      background: #2563eb;
-      color: white;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 600;
-      margin-left: 2px;
-    }
 
     .hero {
       background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
@@ -133,17 +120,24 @@
     }
     .product-card:active { transform: scale(0.99); }
 
+    /* ===== ESTILO DAS IMAGENS REAIS ===== */
     .product-image {
       width: 100%;
-      height: 160px;
-      background: #eef2f6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      height: 200px;
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
       position: relative;
+      background-color: #f1f5f9;
     }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .product-badge {
       position: absolute;
       top: 12px;
@@ -156,6 +150,7 @@
       border-radius: 20px;
       text-transform: uppercase;
       letter-spacing: 0.3px;
+      z-index: 2;
     }
     .product-badge.hot {
       background: #ef4444;
@@ -164,19 +159,12 @@
       background: #f59e0b;
     }
 
+    /* ===== SUBSTITUA AS URLS DAS IMAGENS AQUI ===== */
     .img-physical {
-      background: linear-gradient(145deg, #d9e2ef, #cbd5e1);
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="%233b4a5e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" /><line x1="2" y1="10" x2="22" y2="10" /></svg>'), linear-gradient(145deg, #d9e2ef, #cbd5e1);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 48px 48px, cover;
+      background-image: url('https://imgs.search.brave.com/sNM5DXWYOGEDB6nXAp-SbtVtYJN1x1RvcBfS1gOPQn0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tLm1l/ZGlhLWFtYXpvbi5j/b20vaW1hZ2VzL0kv/NTFuQkJ0a0FGNEwu/anBn');
     }
     .img-digital {
-      background: linear-gradient(145deg, #d9e2ef, #cbd5e1);
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="%233b4a5e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>'), linear-gradient(145deg, #d9e2ef, #cbd5e1);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 48px 48px, cover;
+      background-image: url('https://imgs.search.brave.com/FSa57BjUlNapIIkbu67_taXLcKJEyyVW_VNtm80KkWY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly8xMDAw/bG9nb3MubmV0L3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIzLzEx/L01lZGlhRmlyZS1M/b2dvLTIwMTMtNTAw/eDI4MS5wbmc');
     }
 
     .product-info { padding: 16px 14px 14px; }
@@ -350,22 +338,6 @@
       padding: 12px;
       font-size: 1rem;
     }
-    .btn-danger {
-      background: #ef4444;
-      border-color: #dc2626;
-    }
-    .btn-danger:active { background: #dc2626; }
-    .btn-secondary {
-      background: #e2e8f0;
-      border-color: #cbd5e1;
-      color: #1e293b;
-    }
-    .btn-secondary:active { background: #cbd5e1; }
-    .btn-success {
-      background: #22c55e;
-      border-color: #16a34a;
-    }
-    .btn-success:active { background: #16a34a; }
 
     .modal-overlay {
       position: fixed;
@@ -662,6 +634,7 @@
       .theme-option { font-size: 0.7rem; padding: 6px 4px; }
       .cart-sidebar { width: 92%; }
       .capacity-btn { font-size: 0.65rem; padding: 3px 10px; }
+      .product-image { height: 160px; }
     }
   </style>
 </head>
@@ -759,7 +732,6 @@
     </div>
   </div>
 
-  <!-- Trust badges -->
   <div class="trust-badges">
     <span class="trust-badge">Pagamento seguro</span>
     <span class="trust-badge">Entrega garantida</span>
@@ -827,9 +799,7 @@
     let cart = [];
     let currentProduct = null;
     let selectedThemes = [];
-    let currentCapacity = {};
 
-    // DOM refs
     const cartCountEl = document.getElementById('cart-count');
     const cartToggle = document.getElementById('cartToggle');
     const cartSidebar = document.getElementById('cartSidebar');
@@ -864,13 +834,11 @@
         const newPrice = parseFloat(this.dataset.price);
         priceEl.textContent = formatPrice(newPrice);
 
-        // Atualiza o data-price do card para o selecionado
         card.dataset.selectedPrice = newPrice;
         card.dataset.selectedCapacity = this.dataset.capacity;
       });
     });
 
-    // Inicializa os preços selecionados
     document.querySelectorAll('.product-card').forEach(card => {
       const activeBtn = card.querySelector('.capacity-btn.active');
       if (activeBtn) {
