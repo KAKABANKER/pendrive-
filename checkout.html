@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Checkout | Pendrive Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f8fafc;
+            color: #0b1a2e;
+            line-height: 1.5;
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            padding: 20px 18px 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e9edf2;
+            margin-bottom: 22px;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.3px;
+            color: #0b1a2e;
+        }
+
+        .logo span {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .back-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .checkout-title {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #0b1a2e;
+            margin-bottom: 4px;
+        }
+
+        .checkout-sub {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .order-summary {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+            border: 1px solid #eef2f6;
+        }
+
+        .order-summary .label {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eef2f6;
+            font-size: 0.9rem;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 12px;
+            margin-top: 8px;
+            border-top: 2px solid #d1d9e6;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid #d1d9e6;
+            font-size: 0.95rem;
+            background: white;
+            color: #0b1a2e;
+            transition: 0.15s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .payment-info {
+            background: #eff6ff;
+            border: 1px solid #b9d0f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin: 8px 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .payment-info .pix-logo {
+            width: 40px;
+            height: 40px;
+            background: #2563eb;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .payment-info .pix-logo svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .payment-info .text {
+            font-size: 0.85rem;
+            color: #1e4a8a;
+        }
+        .payment-info .text strong {
+            color: #1e40af;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            border: none;
+            border-radius: 40px;
+            padding: 14px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.15s;
+            width: 100%;
+            border: 1px solid #1d4ed8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:active {
+            background: #1d4ed8;
+            transform: scale(0.98);
+        }
+
+        .btn-primary:disabled {
+            background: #94a3b8;
+            border-color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .pix-area {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #eef2f6;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .pix-area.active {
+            display: block;
+        }
+
+        .pix-area img {
+            max-width: 200px;
+            width: 100%;
+            margin: 12px auto;
+            border-radius: 8px;
+            background: white;
+            padding: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .pix-area .pix-code {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            word-break: break-all;
+            border: 1px solid #e2e8f0;
+            margin: 8px 0;
+            color: #1e293b;
+        }
+
+        .pix-area .copy-btn {
+            background: #eef2f6;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: #1e293b;
+            font-weight: 500;
+            transition: 0.15s;
+        }
+
+        .pix-area .copy-btn:active {
+            background: #d1d9e6;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-badge.pending {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+
+        .status-badge.paid {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-badge.failed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .delivery-note {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            color: #334155;
+            border: 1px dashed #cbd5e1;
+            margin: 16px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .delivery-note strong {
+            color: #0b1a2e;
+            font-weight: 600;
+        }
+
+        /* Feedbacks de clientes - AGORA NO FINAL */
+        .testimonials {
+            background: #fafbfc;
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 24px;
+            border: 1px solid #eef2f6;
+        }
+
+        .testimonials-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .testimonial-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .testimonial-item:last-child {
+            border-bottom: none;
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2px;
+            flex-wrap: wrap;
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #0b1a2e;
+        }
+
+        .testimonial-stars {
+            color: #f59e0b;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        .testimonial-date {
+            font-size: 0.6rem;
+            color: #94a3b8;
+            margin-left: auto;
+        }
+
+        .testimonial-text {
+            font-size: 0.8rem;
+            color: #334155;
+            line-height: 1.4;
+            font-style: italic;
+        }
+
+        .testimonial-text .typo {
+            color: #ef4444;
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        .footer {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #eef2f6;
+            font-size: 0.75rem;
+            color: #64748b;
+            text-align: center;
+            letter-spacing: 0.2px;
+        }
+
+        .footer a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.6s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            transition: 0.2s;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+        }
+
+        .whatsapp-float:active {
+            transform: scale(0.92);
+        }
+
+        .whatsapp-float svg {
+            width: 34px;
+            height: 34px;
+            fill: white;
+        }
+
+        .whatsapp-float .tooltip {
+            position: absolute;
+            right: 72px;
+            background: #1e293b;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.2s;
+        }
+
+        .whatsapp-float .tooltip::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-left: 6px solid #1e293b;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+        }
+
+        .whatsapp-float:hover .tooltip {
+            opacity: 1;
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 14px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .whatsapp-float {
+                width: 52px;
+                height: 52px;
+                bottom: 16px;
+                right: 16px;
+            }
+            .whatsapp-float svg {
+                width: 28px;
+                height: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho -->
+        <header class="header">
+            <div class="logo">Pendrive<span>Store</span></div>
+            <a href="/" class="back-link">Voltar</a>
+        </header>
+
+        <!-- Título -->
+        <h1 class="checkout-title">Checkout</h1>
+        <p class="checkout-sub">Preencha os dados e finalize seu pedido</p>
+
+        <!-- Resumo do pedido -->
+        <div class="order-summary" id="orderSummary">
+            <div class="label">Seu pedido</div>
+            <div id="orderItems"></div>
+            <div class="order-total">
+                <span>Total</span>
+                <span id="orderTotal">R$ 0,00</span>
+            </div>
+        </div>
+
+        <!-- Formulário -->
+        <form id="checkoutForm">
+            <div class="form-group">
+                <label for="customerName">Nome completo</label>
+                <input type="text" id="customerName" placeholder="Digite seu nome completo" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="customerCpf">CPF</label>
+                    <input type="text" id="customerCpf" placeholder="000.000.000-00" maxlength="14" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Telefone</label>
+                    <input type="text" id="customerPhone" placeholder="(00) 00000-0000" maxlength="15" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="customerEmail">E-mail</label>
+                <input type="email" id="customerEmail" placeholder="seu@email.com">
+            </div>
+
+            <!-- Informação de pagamento PIX com logo -->
+            <div class="payment-info">
+                <div class="pix-logo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.5 12L4.5 9L7.5 6L10.5 9L7.5 12ZM16.5 6L13.5 9L16.5 12L19.5 9L16.5 6ZM12 10.5L9 13.5L12 16.5L15 13.5L12 10.5Z"/>
+                        <circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </div>
+                <span class="text"><strong>Pagamento via PIX</strong> - Rapido, seguro e confirmado em minutos</span>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submitBtn">
+                Gerar PIX e finalizar compra
+            </button>
+        </form>
+
+        <!-- Área PIX -->
+        <div class="pix-area" id="pixArea">
+            <h3 style="margin-bottom: 8px; font-weight: 700;">Pagamento via PIX</h3>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 12px;">
+                Escaneie o QR Code ou copie o codigo PIX
+            </p>
+            <div id="pixQrContainer">
+                <img id="pixQrCode" src="" alt="QR Code PIX">
+            </div>
+            <div class="pix-code" id="pixCodeContainer">
+                <span id="pixCode">Carregando...</span>
+            </div>
+            <button class="copy-btn" id="copyPixBtn">Copiar codigo</button>
+            <div style="margin-top: 12px;">
+                <span class="status-badge pending" id="paymentStatus">Aguardando pagamento</span>
+            </div>
+            <p style="font-size: 0.75rem; color: #64748b; margin-top: 12px;">
+                O pagamento sera confirmado automaticamente em ate 5 minutos
+            </p>
+        </div>
+
+        <!-- Delivery note -->
+        <div class="delivery-note">
+            <span>Frete</span>
+            <strong>Entrega gratis</strong> para todo o Brasil (fisico e digital)
+        </div>
+
+        <!-- FEEDBACKS DE CLIENTES - FINAL DA PAGINA -->
+        <div class="testimonials">
+            <div class="testimonials-title">O que nossos clientes dizem</div>
+            
+            <div class="testimonial-item">
+                <div class="testimonial-header">
+                    <span class="testimonial-name">Carlos Silva</span>
+                    <span class="testimonial-stars">★★★★★</span>
+                    <span class="testimonial-date">Hoje</span>
+                </div>
+                <div class="testimonial-text">
+                    "Muito bom o pendrive, veio bem embalado e as musicas que pedi vieram tudo <span class="typo">certin</span>. Recomendo!"
+                </div>
+            </div>
+
+            <div class="testimonial-item">
+                <div class="testimonial-header">
+                    <span class="testimonial-name">Ana Paula</span>
+                    <span class="testimonial-stars">★★★★★</span>
+                    <span class="testimonial-date">Ontem</span>
+                </div>
+                <div class="testimonial-text">
+                    "Entrega <span class="typo">rapida</span> e o atendimento foi top. Ja vou comprar mais uns pra da de presente pros meus <span class="typo">amigos</span>."
+                </div>
+            </div>
+
+            <div class="testimonial-item">
+                <div class="testimonial-header">
+                    <span class="testimonial-name">Marcos Oliveira</span>
+                    <span class="testimonial-stars">★★★★★</span>
+                    <span class="testimonial-date">2 dias atras</span>
+                </div>
+                <div class="testimonial-text">
+                    "Gostei muito da qualidade, super recomendo. O PIX foi <span class="typo">rapido</span> e o download funcionou de <span class="typo">primeira</span>."
+                </div>
+            </div>
+
+            <div class="testimonial-item">
+                <div class="testimonial-header">
+                    <span class="testimonial-name">Fernanda Souza</span>
+                    <span class="testimonial-stars">★★★★☆</span>
+                    <span class="testimonial-date">3 dias atras</span>
+                </div>
+                <div class="testimonial-text">
+                    "Muito <span class="typo">bon</span> o pendrive, so demorou um pouco pra chegar mas valeu a espera. Com certeza compro <span class="typo">denovo</span>."
+                </div>
+            </div>
+
+            <div class="testimonial-item">
+                <div class="testimonial-header">
+                    <span class="testimonial-name">Ricardo Nunes</span>
+                    <span class="testimonial-stars">★★★★★</span>
+                    <span class="testimonial-date">Semana passada</span>
+                </div>
+                <div class="testimonial-text">
+                    "Produto de <span class="typo">qualidade</span>, bem embalado e as musicas selecionadas sao otimas. <span class="typo">Recomndo</span> a todos."
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>PendriveStore &bull; CNPJ 12.345.678/0001-99 &bull; <a href="#">Politica de privacidade</a></p>
+            <p style="margin-top: 4px;">Pagamento seguro &bull; Envio em ate 5 dias uteis</p>
+        </footer>
+    </div>
+
+    <!-- Botão flutuante WhatsApp -->
+    <a href="https://wa.me/5561981168652?text=Ol%C3%A1%2C%20vim%20pelo%20site%20PendriveStore%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20pendrives." 
+       class="whatsapp-float" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       aria-label="Fale conosco no WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <span class="tooltip">Fale conosco</span>
+    </a>
+
+    <script>
+        (function() {
+            const API_BASE = window.location.origin || 'https://reidacacambinha.onrender.com';
+
+            let cart = [];
+            let transactionId = null;
+            let checkInterval = null;
+
+            const form = document.getElementById('checkoutForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const orderItemsEl = document.getElementById('orderItems');
+            const orderTotalEl = document.getElementById('orderTotal');
+            const pixArea = document.getElementById('pixArea');
+            const pixQrCode = document.getElementById('pixQrCode');
+            const pixCode = document.getElementById('pixCode');
+            const copyPixBtn = document.getElementById('copyPixBtn');
+            const paymentStatus = document.getElementById('paymentStatus');
+
+            const customerName = document.getElementById('customerName');
+            const customerCpf = document.getElementById('customerCpf');
+            const customerPhone = document.getElementById('customerPhone');
+            const customerEmail = document.getElementById('customerEmail');
+
+            function maskCPF(value) {
+                return value
+                    .replace(/\D/g, '')
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            }
+
+            function maskPhone(value) {
+                return value
+                    .replace(/\D/g, '')
+                    .replace(/(\d{2})(\d)/, '($1) $2')
+                    .replace(/(\d{5})(\d)/, '$1-$2')
+                    .slice(0, 15);
+            }
+
+            customerCpf.addEventListener('input', (e) => {
+                e.target.value = maskCPF(e.target.value);
+            });
+
+            customerPhone.addEventListener('input', (e) => {
+                e.target.value = maskPhone(e.target.value);
+            });
+
+            function loadCart() {
+                try {
+                    const stored = localStorage.getItem('pendrive_cart');
+                    if (stored) {
+                        cart = JSON.parse(stored);
+                    }
+                } catch (e) {
+                    cart = [];
+                }
+
+                if (!cart || cart.length === 0) {
+                    cart = [
+                        { id: 'physical', name: 'Pendrive Fisico 32GB', price: 79.90, musicList: ['Sertanejo Universitario', 'Funk Carioca'] },
+                        { id: 'digital', name: 'Pendrive Online', price: 49.90, musicList: ['Trap Brasil', 'MPB atual'] }
+                    ];
+                    localStorage.setItem('pendrive_cart', JSON.stringify(cart));
+                }
+
+                renderOrderSummary();
+            }
+
+            function renderOrderSummary() {
+                let html = '';
+                let total = 0;
+
+                cart.forEach(item => {
+                    const price = parseFloat(item.price) || 0;
+                    total += price;
+                    const musicList = item.musicList && item.musicList.length > 0 ?
+                        item.musicList.join(', ') :
+                        'Tema padrao';
+
+                    html += `
+                        <div class="order-item">
+                            <div>
+                                <strong>${item.name} ${item.capacity ? '- ' + item.capacity : ''}</strong>
+                                <div style="font-size:0.75rem;color:#64748b;">${musicList}</div>
+                            </div>
+                            <span>R$ ${price.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                    `;
+                });
+
+                orderItemsEl.innerHTML = html;
+                orderTotalEl.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            }
+
+            async function createPayment(amount, customer) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/create-payment`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            amount: amount,
+                            customer_name: customer.name,
+                            customer_email: customer.email || 'cliente@email.com',
+                            customer_cpf: customer.cpf.replace(/\D/g, ''),
+                            customer_phone: customer.phone.replace(/\D/g, '')
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        return data.payment;
+                    } else {
+                        throw new Error(data.error || 'Erro ao gerar pagamento');
+                    }
+                } catch (error) {
+                    console.error('Erro ao criar pagamento:', error);
+                    throw error;
+                }
+            }
+
+            async function checkPaymentStatus(transactionId) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/check-payment/${transactionId}`);
+                    const data = await response.json();
+                    return data.status === 'paid' ? 'paid' : 'pending';
+                } catch (error) {
+                    console.error('Erro ao verificar status:', error);
+                    return 'error';
+                }
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                if (!customerName.value.trim()) {
+                    alert('Por favor, preencha seu nome completo.');
+                    customerName.focus();
+                    return;
+                }
+
+                const cpfClean = customerCpf.value.replace(/\D/g, '');
+                if (cpfClean.length !== 11) {
+                    alert('Por favor, preencha um CPF valido.');
+                    customerCpf.focus();
+                    return;
+                }
+
+                const phoneClean = customerPhone.value.replace(/\D/g, '');
+                if (phoneClean.length < 10) {
+                    alert('Por favor, preencha um telefone valido.');
+                    customerPhone.focus();
+                    return;
+                }
+
+                const total = cart.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
+
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="loading-spinner"></span> Gerando PIX...';
+
+                try {
+                    const customer = {
+                        name: customerName.value.trim(),
+                        cpf: customerCpf.value,
+                        phone: customerPhone.value,
+                        email: customerEmail.value.trim() || undefined
+                    };
+
+                    const payment = await createPayment(total, customer);
+
+                    if (payment && payment.pix_qrcode) {
+                        transactionId = payment.id;
+
+                        pixArea.classList.add('active');
+                        pixQrCode.src = payment.pix_qrcode;
+                        pixCode.textContent = payment.pix_code || payment.pix_qrcode;
+
+                        paymentStatus.textContent = 'Aguardando pagamento';
+                        paymentStatus.className = 'status-badge pending';
+
+                        if (checkInterval) clearInterval(checkInterval);
+                        let attempts = 0;
+                        const maxAttempts = 60;
+
+                        checkInterval = setInterval(async () => {
+                            attempts++;
+                            const status = await checkPaymentStatus(transactionId);
+
+                            if (status === 'paid') {
+                                clearInterval(checkInterval);
+                                checkInterval = null;
+                                paymentStatus.textContent = 'Pagamento confirmado!';
+                                paymentStatus.className = 'status-badge paid';
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = 'Pedido finalizado';
+                                alert('Pagamento confirmado! Seu pedido foi processado com sucesso.');
+                                localStorage.removeItem('pendrive_cart');
+                                cart = [];
+                            } else if (attempts >= maxAttempts) {
+                                clearInterval(checkInterval);
+                                checkInterval = null;
+                                submitBtn.disabled = false;
+                                submitBtn.innerHTML = 'Gerar PIX e finalizar compra';
+                            }
+                        }, 5000);
+
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'PIX gerado com sucesso';
+                    } else {
+                        throw new Error('Erro ao gerar PIX. Tente novamente.');
+                    }
+
+                } catch (error) {
+                    console.error('Erro no checkout:', error);
+                    alert(error.message || 'Ocorreu um erro ao processar seu pedido. Tente novamente.');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Gerar PIX e finalizar compra';
+                }
+            });
+
+            copyPixBtn.addEventListener('click', () => {
+                const code = pixCode.textContent;
+                if (code && code !== 'Carregando...') {
+                    navigator.clipboard.writeText(code).then(() => {
+                        const originalText = copyPixBtn.textContent;
+                        copyPixBtn.textContent = 'Copiado!';
+                        setTimeout(() => {
+                            copyPixBtn.textContent = originalText;
+                        }, 2000);
+                    }).catch(() => {
+                        const textArea = document.createElement('textarea');
+                        textArea.value = code;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        alert('Codigo copiado!');
+                    });
+                }
+            });
+
+            loadCart();
+
+            if (!cart || cart.length === 0) {
+                const stored = localStorage.getItem('pendrive_cart');
+                if (stored) {
+                    try {
+                        cart = JSON.parse(stored);
+                        renderOrderSummary();
+                    } catch (e) {}
+                }
+            }
+
+        })();
+    </script>
+</body>
+</html>

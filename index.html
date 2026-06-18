@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Pendrive Store | Seleção de Temas</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f8fafc;
+      color: #0b1a2e;
+      line-height: 1.5;
+      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      padding: 20px 18px 30px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e9edf2;
+      margin-bottom: 22px;
+      position: relative;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.3px;
+      color: #0b1a2e;
+    }
+    .logo span { color: #2563eb; font-weight: 600; }
+
+    .cart-badge {
+      background: #f1f5f9;
+      padding: 6px 12px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      transition: 0.15s;
+      position: relative;
+    }
+    .cart-badge:hover { background: #e2e8f0; }
+    .cart-badge strong { font-weight: 600; color: #0b1a2e; }
+    .cart-badge .cart-count-bubble {
+      background: #2563eb;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-left: 2px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      border-radius: 20px;
+      padding: 20px 16px;
+      margin-bottom: 28px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+    .hero h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #0b1a2e;
+      margin-bottom: 6px;
+    }
+    .hero p {
+      color: #334155;
+      font-size: 0.95rem;
+      max-width: 280px;
+      margin: 0 auto 8px;
+    }
+    .badge-free {
+      display: inline-block;
+      background: #2563eb;
+      color: white;
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 4px 16px;
+      border-radius: 40px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    .product-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin: 28px 0 32px;
+    }
+
+    .product-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 1px solid #eef2f6;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+      transition: 0.2s;
+    }
+    .product-card:active { transform: scale(0.99); }
+
+    .product-image {
+      width: 100%;
+      height: 160px;
+      background: #eef2f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .product-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #2563eb;
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .product-badge.hot {
+      background: #ef4444;
+    }
+    .product-badge.best {
+      background: #f59e0b;
+    }
+
+    .img-physical {
+      background: linear-gradient(145deg, #d9e2ef, #cbd5e1);
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="%233b4a5e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" /><line x1="2" y1="10" x2="22" y2="10" /></svg>'), linear-gradient(145deg, #d9e2ef, #cbd5e1);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 48px 48px, cover;
+    }
+    .img-digital {
+      background: linear-gradient(145deg, #d9e2ef, #cbd5e1);
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="%233b4a5e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>'), linear-gradient(145deg, #d9e2ef, #cbd5e1);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 48px 48px, cover;
+    }
+
+    .product-info { padding: 16px 14px 14px; }
+    .product-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #0b1a2e;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .product-title .name { flex: 1; }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin: 4px 0 6px;
+    }
+    .stars {
+      color: #f59e0b;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+    .stars .empty { color: #d1d5db; }
+    .rating-count {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+    .sales-count {
+      font-size: 0.75rem;
+      color: #22c55e;
+      font-weight: 500;
+    }
+
+    .product-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin: 6px 0 4px;
+      flex-wrap: wrap;
+    }
+    .product-price {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #0b1a2e;
+    }
+    .product-price-old {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      text-decoration: line-through;
+    }
+    .product-price-discount {
+      background: #fef2f2;
+      color: #dc2626;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+    }
+
+    .capacity-selector {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 10px 0 8px;
+    }
+    .capacity-btn {
+      padding: 4px 12px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #1e293b;
+      background: white;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .capacity-btn:hover {
+      border-color: #94a3b8;
+    }
+    .capacity-btn.active {
+      border-color: #2563eb;
+      background: #eff6ff;
+      color: #2563eb;
+    }
+    .capacity-btn .price-tag {
+      font-weight: 600;
+      color: #0b1a2e;
+    }
+
+    .product-desc {
+      font-size: 0.85rem;
+      color: #475569;
+      margin: 4px 0 8px;
+    }
+
+    .product-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .tag {
+      background: #f1f5f9;
+      padding: 2px 12px;
+      border-radius: 30px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: #1e293b;
+      border: 1px solid #e2e8f0;
+    }
+    .tag-free {
+      background: #dbeafe;
+      color: #1e4a8a;
+      border-color: #b9d0f0;
+      font-weight: 600;
+    }
+    .tag-stock {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #bbf7d0;
+    }
+
+    .urgency-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #fef2f2;
+      color: #dc2626;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
+      border: 1px solid #fecaca;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      border: none;
+      border-radius: 40px;
+      padding: 8px 18px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: white;
+      cursor: pointer;
+      transition: 0.15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border: 1px solid #1d4ed8;
+      min-width: 110px;
+    }
+    .btn-primary:active {
+      background: #1d4ed8;
+      transform: scale(0.96);
+    }
+    .btn-sm {
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      min-width: auto;
+    }
+    .btn-block {
+      width: 100%;
+      justify-content: center;
+      padding: 12px;
+      font-size: 1rem;
+    }
+    .btn-danger {
+      background: #ef4444;
+      border-color: #dc2626;
+    }
+    .btn-danger:active { background: #dc2626; }
+    .btn-secondary {
+      background: #e2e8f0;
+      border-color: #cbd5e1;
+      color: #1e293b;
+    }
+    .btn-secondary:active { background: #cbd5e1; }
+    .btn-success {
+      background: #22c55e;
+      border-color: #16a34a;
+    }
+    .btn-success:active { background: #16a34a; }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-box {
+      background: #ffffff;
+      border-radius: 32px;
+      max-width: 420px;
+      width: 100%;
+      padding: 28px 24px 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: fadeSlide 0.2s ease-out;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #0b1a2e;
+      margin-bottom: 2px;
+    }
+    .modal-sub {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-bottom: 16px;
+    }
+    .modal-box label {
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #1e293b;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .theme-option {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 8px 6px;
+      font-size: 0.8rem;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.1s;
+      color: #1e293b;
+      user-select: none;
+    }
+    .theme-option.selected {
+      background: #dbeafe;
+      border-color: #2563eb;
+      color: #1e4a8a;
+      font-weight: 500;
+    }
+    .theme-option:active { transform: scale(0.96); }
+
+    .selected-counter {
+      font-size: 0.8rem;
+      color: #475569;
+      margin-bottom: 12px;
+      text-align: right;
+    }
+    .selected-counter strong { color: #0b1a2e; }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .modal-actions button {
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      border: 1px solid #d1d9e6;
+      background: transparent;
+      color: #1e293b;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+    .modal-actions button.confirm {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: white;
+    }
+    .modal-actions button:active { transform: scale(0.96); }
+
+    /* Carrinho lateral */
+    .cart-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.4);
+      z-index: 999;
+      display: none;
+      backdrop-filter: blur(2px);
+    }
+    .cart-overlay.active { display: block; }
+
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 85%;
+      max-width: 400px;
+      height: 100%;
+      background: #ffffff;
+      z-index: 1000;
+      transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: -8px 0 30px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    .cart-sidebar.open { right: 0; }
+
+    .cart-sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 18px 16px;
+      border-bottom: 1px solid #e9edf2;
+    }
+    .cart-sidebar-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0b1a2e;
+    }
+    .cart-close {
+      background: #f1f5f9;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.15s;
+    }
+    .cart-close:hover { background: #e2e8f0; }
+
+    .cart-sidebar-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 18px;
+    }
+    .cart-empty-state {
+      text-align: center;
+      padding: 40px 0;
+      color: #94a3b8;
+    }
+    .cart-empty-state .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+    .cart-empty-state p {
+      font-size: 0.9rem;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f1f5f9;
+      align-items: flex-start;
+    }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .cart-item-name {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #0b1a2e;
+    }
+    .cart-item-music {
+      font-size: 0.75rem;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 0 8px;
+      border-radius: 10px;
+      display: inline-block;
+      line-height: 1.6;
+      margin-top: 2px;
+      max-width: 100%;
+      word-break: break-word;
+    }
+    .cart-item-price {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #0b1a2e;
+      white-space: nowrap;
+    }
+    .cart-item-remove {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 4px 8px;
+      font-size: 1.1rem;
+      transition: 0.15s;
+      border-radius: 8px;
+    }
+    .cart-item-remove:hover {
+      color: #ef4444;
+      background: #fef2f2;
+    }
+
+    .cart-sidebar-footer {
+      padding: 16px 18px 20px;
+      border-top: 1px solid #e9edf2;
+      background: #fafbfc;
+    }
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: #0b1a2e;
+    }
+    .cart-total-row span:last-child { color: #2563eb; }
+    .cart-footer-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .cart-footer-actions .btn-primary {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+    }
+
+    .trust-badges {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 12px 0 6px;
+      flex-wrap: wrap;
+    }
+    .trust-badge {
+      font-size: 0.7rem;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .footer {
+      margin-top: 30px;
+      padding-top: 16px;
+      border-top: 1px solid #eef2f6;
+      font-size: 0.75rem;
+      color: #64748b;
+      text-align: center;
+      letter-spacing: 0.2px;
+    }
+    .footer a { color: #2563eb; text-decoration: none; }
+
+    @media (max-width: 400px) {
+      .container { padding: 14px; }
+      .hero h1 { font-size: 1.4rem; }
+      .modal-box { padding: 20px 16px; }
+      .theme-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+      .theme-option { font-size: 0.7rem; padding: 6px 4px; }
+      .cart-sidebar { width: 92%; }
+      .capacity-btn { font-size: 0.65rem; padding: 3px 10px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <div class="logo">Pendrive<span>Store</span></div>
+    <div class="cart-badge" id="cartToggle">
+      <span>Carrinho</span>
+      <strong id="cart-count">0</strong>
+    </div>
+  </header>
+
+  <div class="hero">
+    <h1>Monte sua playlist</h1>
+    <p>Escolha ate 15 ritmos para seu pendrive fisico ou digital.</p>
+    <span class="badge-free">Frete gratis</span>
+  </div>
+
+  <div class="product-grid">
+    <!-- Pendrive Físico -->
+    <div class="product-card" data-id="physical" data-name="Pendrive Fisico" data-base-price="29.90">
+      <div class="product-image img-physical">
+        <span class="product-badge best">Mais vendido</span>
+      </div>
+      <div class="product-info">
+        <div class="product-title">
+          <span class="name">Pendrive Fisico</span>
+        </div>
+        <div class="product-rating">
+          <span class="stars">★★★★★</span>
+          <span class="rating-count">(2.847)</span>
+          <span class="sales-count">+ 12.4 mil vendidos</span>
+        </div>
+        <div class="product-price-row">
+          <span class="product-price" id="physicalPrice">R$ 29,90</span>
+          <span class="product-price-old">R$ 49,90</span>
+          <span class="product-price-discount">-40%</span>
+        </div>
+        <div class="capacity-selector">
+          <button class="capacity-btn active" data-capacity="8GB" data-price="29.90">8GB <span class="price-tag">R$29,90</span></button>
+          <button class="capacity-btn" data-capacity="16GB" data-price="39.90">16GB <span class="price-tag">R$39,90</span></button>
+          <button class="capacity-btn" data-capacity="32GB" data-price="59.90">32GB <span class="price-tag">R$59,90</span></button>
+          <button class="capacity-btn" data-capacity="64GB" data-price="89.90">64GB <span class="price-tag">R$89,90</span></button>
+          <button class="capacity-btn" data-capacity="128GB" data-price="149.90">128GB <span class="price-tag">R$149,90</span></button>
+        </div>
+        <div class="product-desc">USB 3.0, metal, com chaveiro. Entrega em todo Brasil.</div>
+        <div class="product-meta">
+          <span class="tag tag-free">Entrega gratis</span>
+          <span class="tag tag-stock">Em estoque</span>
+          <span class="urgency-badge">Ultimas unidades</span>
+        </div>
+        <div style="margin-top: 10px;">
+          <button class="btn-primary btn-sm open-modal" data-target="modal-physical" style="width:100%;">Selecionar temas</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pendrive Digital -->
+    <div class="product-card" data-id="digital" data-name="Pendrive Online" data-base-price="19.90">
+      <div class="product-image img-digital">
+        <span class="product-badge hot">Promocao</span>
+      </div>
+      <div class="product-info">
+        <div class="product-title">
+          <span class="name">Pendrive Online</span>
+        </div>
+        <div class="product-rating">
+          <span class="stars">★★★★☆</span>
+          <span class="rating-count">(1.932)</span>
+          <span class="sales-count">+ 8.7 mil vendidos</span>
+        </div>
+        <div class="product-price-row">
+          <span class="product-price" id="digitalPrice">R$ 19,90</span>
+          <span class="product-price-old">R$ 39,90</span>
+          <span class="product-price-discount">-50%</span>
+        </div>
+        <div class="capacity-selector">
+          <button class="capacity-btn active" data-capacity="8GB" data-price="19.90">8GB <span class="price-tag">R$19,90</span></button>
+          <button class="capacity-btn" data-capacity="16GB" data-price="29.90">16GB <span class="price-tag">R$29,90</span></button>
+          <button class="capacity-btn" data-capacity="32GB" data-price="49.90">32GB <span class="price-tag">R$49,90</span></button>
+          <button class="capacity-btn" data-capacity="64GB" data-price="79.90">64GB <span class="price-tag">R$79,90</span></button>
+          <button class="capacity-btn" data-capacity="128GB" data-price="139.90">128GB <span class="price-tag">R$139,90</span></button>
+        </div>
+        <div class="product-desc">Link de download com playlist personalizada. Entrega imediata.</div>
+        <div class="product-meta">
+          <span class="tag">Digital</span>
+          <span class="tag tag-stock">Disponivel</span>
+          <span class="urgency-badge">Entrega imediata</span>
+        </div>
+        <div style="margin-top: 10px;">
+          <button class="btn-primary btn-sm open-modal" data-target="modal-digital" style="width:100%;">Selecionar temas</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust badges -->
+  <div class="trust-badges">
+    <span class="trust-badge">Pagamento seguro</span>
+    <span class="trust-badge">Entrega garantida</span>
+    <span class="trust-badge">Satisfacao ou reembolso</span>
+    <span class="trust-badge">+ 20 mil clientes</span>
+  </div>
+
+  <footer class="footer">
+    <p>PendriveStore &bull; CNPJ 12.345.678/0001-99 &bull; <a href="#">Politica de privacidade</a></p>
+    <p style="margin-top: 4px;">Pagamento seguro &bull; Envio em ate 5 dias uteis</p>
+  </footer>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="themeModal">
+  <div class="modal-box">
+    <div class="modal-title" id="modalProductName">Pendrive</div>
+    <div class="modal-sub" id="modalProductPrice">R$ 0,00</div>
+    <label>Selecione os temas (ate 15)</label>
+    <div class="selected-counter">Selecionados: <strong id="selectedCount">0</strong> / 15</div>
+    <div class="theme-grid" id="themeGrid"></div>
+    <div class="modal-actions">
+      <button id="modalCancel">Cancelar</button>
+      <button class="confirm" id="modalConfirm">Adicionar ao carrinho</button>
+    </div>
+  </div>
+</div>
+
+<!-- Carrinho lateral -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-sidebar-header">
+    <h2>Seu carrinho</h2>
+    <button class="cart-close" id="cartClose">×</button>
+  </div>
+  <div class="cart-sidebar-body" id="cartSidebarBody">
+    <div class="cart-empty-state">
+      <div class="empty-icon">🛒</div>
+      <p>Seu carrinho esta vazio</p>
+      <p style="font-size:0.8rem;color:#94a3b8;margin-top:4px;">Adicione seus pendrives favoritos</p>
+    </div>
+  </div>
+  <div class="cart-sidebar-footer" id="cartSidebarFooter" style="display:none;">
+    <div class="cart-total-row">
+      <span>Total</span>
+      <span id="cartSidebarTotal">R$ 0,00</span>
+    </div>
+    <div class="cart-footer-actions">
+      <button class="btn-primary" id="cartCheckoutBtn">Continuar para pagamento</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const THEMES = [
+      'Sertanejo Universitario', 'Funk Carioca', 'Pagode 2026', 'Forro pe de serra',
+      'Eletrohouse', 'Trap Brasil', 'MPB atual', 'Rock nacional',
+      'Pop internacional', 'Reggaeton', 'Samba enredo', 'Bossa nova',
+      'Indie rock', 'K-pop', 'Musica classica', 'Jazz contemporaneo',
+      'Blues rock', 'Folk brasileiro', 'R&B soul'
+    ];
+    const MAX_SELECT = 15;
+
+    let cart = [];
+    let currentProduct = null;
+    let selectedThemes = [];
+    let currentCapacity = {};
+
+    // DOM refs
+    const cartCountEl = document.getElementById('cart-count');
+    const cartToggle = document.getElementById('cartToggle');
+    const cartSidebar = document.getElementById('cartSidebar');
+    const cartOverlay = document.getElementById('cartOverlay');
+    const cartClose = document.getElementById('cartClose');
+    const cartSidebarBody = document.getElementById('cartSidebarBody');
+    const cartSidebarFooter = document.getElementById('cartSidebarFooter');
+    const cartSidebarTotal = document.getElementById('cartSidebarTotal');
+    const cartCheckoutBtn = document.getElementById('cartCheckoutBtn');
+
+    const modalOverlay = document.getElementById('themeModal');
+    const modalProductName = document.getElementById('modalProductName');
+    const modalProductPrice = document.getElementById('modalProductPrice');
+    const themeGrid = document.getElementById('themeGrid');
+    const selectedCountEl = document.getElementById('selectedCount');
+    const modalConfirm = document.getElementById('modalConfirm');
+    const modalCancel = document.getElementById('modalCancel');
+
+    function formatPrice(value) {
+      return 'R$ ' + parseFloat(value).toFixed(2).replace('.', ',');
+    }
+
+    // ===== CAPACIDADE =====
+    document.querySelectorAll('.capacity-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const parent = this.closest('.capacity-selector');
+        parent.querySelectorAll('.capacity-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const card = this.closest('.product-card');
+        const priceEl = card.querySelector('.product-price');
+        const newPrice = parseFloat(this.dataset.price);
+        priceEl.textContent = formatPrice(newPrice);
+
+        // Atualiza o data-price do card para o selecionado
+        card.dataset.selectedPrice = newPrice;
+        card.dataset.selectedCapacity = this.dataset.capacity;
+      });
+    });
+
+    // Inicializa os preços selecionados
+    document.querySelectorAll('.product-card').forEach(card => {
+      const activeBtn = card.querySelector('.capacity-btn.active');
+      if (activeBtn) {
+        card.dataset.selectedPrice = activeBtn.dataset.price;
+        card.dataset.selectedCapacity = activeBtn.dataset.capacity;
+      }
+    });
+
+    // ===== FUNÇÕES DO CARRINHO =====
+    function renderCart() {
+      const totalItems = cart.reduce((acc) => acc + 1, 0);
+      cartCountEl.textContent = totalItems;
+
+      if (cart.length === 0) {
+        cartSidebarBody.innerHTML = `
+          <div class="cart-empty-state">
+            <div class="empty-icon">🛒</div>
+            <p>Seu carrinho esta vazio</p>
+            <p style="font-size:0.8rem;color:#94a3b8;margin-top:4px;">Adicione seus pendrives favoritos</p>
+          </div>
+        `;
+        cartSidebarFooter.style.display = 'none';
+        return;
+      }
+
+      let html = '';
+      let total = 0;
+      cart.forEach((item, index) => {
+        total += parseFloat(item.price) || 0;
+        const musicList = item.musicList && item.musicList.length > 0
+          ? item.musicList.join(', ')
+          : 'Tema padrao';
+        html += `
+          <div class="cart-item">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name} - ${item.capacity || ''}</div>
+              <div class="cart-item-music">${musicList}</div>
+            </div>
+            <div class="cart-item-price">${formatPrice(item.price)}</div>
+            <button class="cart-item-remove" data-index="${index}" title="Remover item">×</button>
+          </div>
+        `;
+      });
+
+      cartSidebarBody.innerHTML = html;
+      cartSidebarTotal.textContent = formatPrice(total);
+      cartSidebarFooter.style.display = 'block';
+
+      document.querySelectorAll('.cart-item-remove').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const index = parseInt(this.dataset.index);
+          cart.splice(index, 1);
+          renderCart();
+          localStorage.setItem('pendrive_cart', JSON.stringify(cart));
+          updateMainPageSummary();
+        });
+      });
+    }
+
+    function updateMainPageSummary() {
+      const cartItemsContainer = document.getElementById('cart-items');
+      const cartTotalContainer = document.getElementById('checkout-total-container');
+      const cartTotalEl = document.getElementById('cart-total');
+
+      if (!cartItemsContainer) return;
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div class="empty-cart">Carrinho vazio. Selecione seu pendrive e temas.</div>';
+        if (cartTotalContainer) cartTotalContainer.style.display = 'none';
+        return;
+      }
+
+      let html = '';
+      let total = 0;
+      cart.forEach((item) => {
+        total += parseFloat(item.price) || 0;
+        const musicList = item.musicList && item.musicList.length > 0
+          ? item.musicList.join(', ')
+          : 'Tema padrao';
+        html += `
+          <div class="checkout-item">
+            <div class="item-detail">
+              <span class="item-name">${item.name} - ${item.capacity || ''}</span>
+              <span class="item-music">${musicList}</span>
+            </div>
+            <span class="item-price">${formatPrice(item.price)}</span>
+          </div>
+        `;
+      });
+
+      cartItemsContainer.innerHTML = html;
+      if (cartTotalEl) cartTotalEl.textContent = formatPrice(total);
+      if (cartTotalContainer) cartTotalContainer.style.display = 'block';
+    }
+
+    function addItemWithThemes(id, name, price, themes, capacity) {
+      if (!themes || themes.length === 0) themes = ['Tema padrao'];
+      cart.push({
+        id: id,
+        name: name,
+        price: parseFloat(price),
+        musicList: themes,
+        capacity: capacity || ''
+      });
+      renderCart();
+      updateMainPageSummary();
+      localStorage.setItem('pendrive_cart', JSON.stringify(cart));
+    }
+
+    // ===== CARRINHO LATERAL =====
+    function openCart() {
+      cartSidebar.classList.add('open');
+      cartOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCart() {
+      cartSidebar.classList.remove('open');
+      cartOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    cartToggle.addEventListener('click', openCart);
+    cartClose.addEventListener('click', closeCart);
+    cartOverlay.addEventListener('click', closeCart);
+
+    // ===== MODAL =====
+    function renderThemeGrid() {
+      themeGrid.innerHTML = '';
+      THEMES.forEach(theme => {
+        const div = document.createElement('div');
+        div.className = 'theme-option';
+        div.textContent = theme;
+        div.dataset.theme = theme;
+        if (selectedThemes.includes(theme)) div.classList.add('selected');
+        div.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const t = this.dataset.theme;
+          const idx = selectedThemes.indexOf(t);
+          if (idx > -1) {
+            selectedThemes.splice(idx, 1);
+            this.classList.remove('selected');
+          } else {
+            if (selectedThemes.length >= MAX_SELECT) {
+              alert('Voce pode selecionar no maximo 15 temas.');
+              return;
+            }
+            selectedThemes.push(t);
+            this.classList.add('selected');
+          }
+          selectedCountEl.textContent = selectedThemes.length;
+        });
+        themeGrid.appendChild(div);
+      });
+    }
+
+    document.querySelectorAll('.open-modal').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const card = this.closest('.product-card');
+        if (!card) return;
+        const id = card.dataset.id;
+        const name = card.dataset.name;
+        const price = parseFloat(card.dataset.selectedPrice) || parseFloat(card.dataset.basePrice);
+        const capacity = card.dataset.selectedCapacity || '8GB';
+        if (isNaN(price) || !id) return;
+
+        currentProduct = { id, name, price, capacity };
+        modalProductName.textContent = `${name} - ${capacity}`;
+        modalProductPrice.textContent = formatPrice(price);
+        selectedThemes = [];
+        selectedCountEl.textContent = '0';
+        renderThemeGrid();
+        modalOverlay.classList.add('active');
+      });
+    });
+
+    function closeModal() {
+      modalOverlay.classList.remove('active');
+      currentProduct = null;
+    }
+
+    modalCancel.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    modalConfirm.addEventListener('click', function() {
+      if (!currentProduct) return;
+      if (selectedThemes.length === 0) {
+        alert('Selecione pelo menos um tema.');
+        return;
+      }
+      addItemWithThemes(
+        currentProduct.id,
+        currentProduct.name,
+        currentProduct.price,
+        [...selectedThemes],
+        currentProduct.capacity
+      );
+      closeModal();
+      setTimeout(openCart, 300);
+    });
+
+    // ===== CHECKOUT =====
+    function goToCheckout() {
+      if (cart.length === 0) {
+        alert('Seu carrinho esta vazio.');
+        return;
+      }
+      localStorage.setItem('pendrive_cart', JSON.stringify(cart));
+      window.location.href = '/checkout.html';
+    }
+
+    document.getElementById('checkout-btn')?.addEventListener('click', goToCheckout);
+    cartCheckoutBtn.addEventListener('click', goToCheckout);
+
+    // ===== INICIALIZAR =====
+    function loadSavedCart() {
+      try {
+        const saved = localStorage.getItem('pendrive_cart');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            cart = parsed;
+            renderCart();
+            updateMainPageSummary();
+          }
+        }
+      } catch (e) {}
+    }
+
+    renderThemeGrid();
+    loadSavedCart();
+    renderCart();
+    updateMainPageSummary();
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeCart();
+    });
+
+  })();
+</script>
+</body>
+</html>
