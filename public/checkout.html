@@ -143,6 +143,11 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
+        .form-group input:disabled {
+            background: #f1f5f9;
+            cursor: not-allowed;
+        }
+
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -166,7 +171,28 @@
             margin-bottom: 8px;
         }
 
-        /* ===== PIX LOGO CORRIGIDA ===== */
+        .cep-loading {
+            display: none;
+            font-size: 0.75rem;
+            color: #2563eb;
+            margin-top: 4px;
+        }
+
+        .cep-loading.active {
+            display: block;
+        }
+
+        .cep-error {
+            display: none;
+            font-size: 0.75rem;
+            color: #dc2626;
+            margin-top: 4px;
+        }
+
+        .cep-error.active {
+            display: block;
+        }
+
         .payment-info {
             background: #eff6ff;
             border: 1px solid #b9d0f0;
@@ -570,13 +596,15 @@
                 <input type="email" id="customerEmail" placeholder="seu@email.com">
             </div>
 
-            <!-- Endereço de entrega -->
+            <!-- Endereço de entrega com busca automática de CEP -->
             <div class="delivery-address">
                 <div class="label">Endereco de entrega</div>
                 
                 <div class="form-group" style="margin-bottom:12px;">
                     <label for="addressCep">CEP</label>
                     <input type="text" id="addressCep" placeholder="00000-000" maxlength="9">
+                    <div class="cep-loading" id="cepLoading">Buscando endereco...</div>
+                    <div class="cep-error" id="cepError">CEP nao encontrado. Verifique o numero digitado.</div>
                 </div>
 
                 <div class="form-group" style="margin-bottom:12px;">
@@ -641,7 +669,6 @@
                 </div>
             </div>
 
-            <!-- ===== PIX LOGO CORRIGIDA ===== -->
             <div class="payment-info">
                 <div class="pix-logo-wrapper">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -765,6 +792,7 @@
             let cart = [];
             let transactionId = null;
             let checkInterval = null;
+            let cepTimeout = null;
 
             const form = document.getElementById('checkoutForm');
             const submitBtn = document.getElementById('submitBtn');
@@ -789,6 +817,8 @@
             const addressNeighborhood = document.getElementById('addressNeighborhood');
             const addressCity = document.getElementById('addressCity');
             const addressState = document.getElementById('addressState');
+            const cepLoading = document.getElementById('cepLoading');
+            const cepError = document.getElementById('cepError');
 
             function showError(msg) {
                 errorMessage.textContent = msg;
@@ -821,16 +851,73 @@
                     .slice(0, 9);
             }
 
+            // ===== BUSCA AUTOMÁTICA DE CEP =====
+            async function buscarCEP(cep) {
+                const cepClean = cep.replace(/\D/g, '');
+                
+                if (cepClean.length !== 8) {
+                    return;
+                }
+
+                cepLoading.classList.add('active');
+                cepError.classList.remove('active');
+
+                try {
+                    const response = await fetch(`https://viacep.com.br/ws/${cepClean}/json/`);
+                    const data = await response.json();
+
+                    if (data.erro) {
+                        cepError.classList.add('active');
+                        return;
+                    }
+
+                    // Preenche os campos automaticamente
+                    if (data.logradouro) addressStreet.value = data.logradouro;
+                    if (data.bairro) addressNeighborhood.value = data.bairro;
+                    if (data.localidade) addressCity.value = data.localidade;
+                    if (data.uf) {
+                        addressState.value = data.uf;
+                    }
+
+                    // Se não tiver logradouro, foca no número
+                    if (!data.logradouro) {
+                        addressNumber.focus();
+                    }
+
+                } catch (error) {
+                    console.error('Erro ao buscar CEP:', error);
+                    cepError.textContent = 'Erro ao buscar CEP. Tente novamente.';
+                    cepError.classList.add('active');
+                } finally {
+                    cepLoading.classList.remove('active');
+                }
+            }
+
+            // Evento de busca automática ao digitar CEP
+            addressCep.addEventListener('input', function(e) {
+                e.target.value = maskCEP(e.target.value);
+                
+                // Limpa timeout anterior
+                if (cepTimeout) clearTimeout(cepTimeout);
+                
+                const cepClean = this.value.replace(/\D/g, '');
+                
+                // Só busca se tiver 8 dígitos
+                if (cepClean.length === 8) {
+                    cepTimeout = setTimeout(() => {
+                        buscarCEP(this.value);
+                    }, 500);
+                } else {
+                    cepError.classList.remove('active');
+                }
+            });
+
             customerCpf.addEventListener('input', (e) => {
                 e.target.value = maskCPF(e.target.value);
             });
 
             customerPhone.addEventListener('input', (e) => {
                 e.target.value = maskPhone(e.target.value);
-            });
-
-            addressCep.addEventListener('input', (e) => {
-                e.target.value = maskCEP(e.target.value);
             });
 
             function loadCart() {
